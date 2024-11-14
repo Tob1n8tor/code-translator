@@ -1,5 +1,5 @@
 # for development: docker build --target dev -t react-docker:1.0.0-dev .
-# command to run: docker run --rm -it --name web -p 3000:3000 -v $(pwd):/code react-docker:1.0.0-dev
+# command to run: docker run --rm -it --name web -p 3000:3000 -v $(pwd):/code react-docker:1.0.0-dev {npm install (if not already installed)}
 FROM node:22.11.0 as dev
 
 WORKDIR /code
@@ -15,7 +15,7 @@ CMD ["npm", "run", "start"]
 
 
 # for production: docker build --target prod -t react-docker:1.0.0-prod .
-# command to run: docker run --rm -it --name web -p 3000:80 react-docker:1.0.0-prod
+# command to run: docker run --rm -it --name web -p 3000:80 react-docker:1.0.0-prod {npm install (if not already installed)}
 # this image is way smaller than the dev image
 FROM node:22.11.0 as build
 

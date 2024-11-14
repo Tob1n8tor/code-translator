@@ -1,5 +1,7 @@
 # Kabul
 
+### Frequent Errors: 
+when you run into issues like react-script not found try to run npm install in the /frontend folder from terminal first and the try the docker run command again 
 
 
 ## Getting started
