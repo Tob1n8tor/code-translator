@@ -21,14 +21,14 @@ const language_options = [
 ];
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, set_loading] = useState(false);
   const [input_language, set_input_language] = useState(language_options[0]);
   const [output_language, set_output_language] = useState(language_options[1]);
   const [code, set_code] = useState('');
   const [translated_code, set_translated_code] = useState('');
-  
+
   // Create a ref to the hidden file input
-  const fileInputRef = useRef(null);
+  const file_input_ref = useRef(null);
 
   const handle_input_language_change = (selected_option) => {
     set_input_language(selected_option);
@@ -71,11 +71,11 @@ function App() {
   };
 
   // Trigger file input when the upload button is clicked
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
+  const handle_upload_click = () => {
+    file_input_ref.current.click();
   };
 
-  const handleTranslate = async () => {
+  const handle_translate = async () => {
     if (!input_language) {
       alert('Please select a input language!');
       return;
@@ -89,7 +89,7 @@ function App() {
       return;
     }
 
-    setLoading(true); // Show loading state
+    set_loading(true); // Show loading state
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/translate-code/', {
         code: code,
@@ -101,7 +101,7 @@ function App() {
       console.error('Error during translation:', error);
       alert('An error occurred while translating the code.');
     } finally {
-      setLoading(false); // Hide loading state
+      set_loading(false); // Hide loading state
     }
   };
 
@@ -143,11 +143,11 @@ function App() {
             placeholder="Input your code here"
           />
           <div className="button_group">
-            <button onClick={handleUploadClick} className="upload_button">Upload</button>
+            <button onClick={handle_upload_click} className="upload_button">Upload</button>
           </div>
           {/* Hidden file input */}
           <input
-            ref={fileInputRef}
+            ref={file_input_ref}
             type="file"
             onChange={handle_file_upload}
             style={{ display: 'none' }}  // Hide the input
@@ -180,7 +180,7 @@ function App() {
 
       </div>
 
-      <button onClick={handleTranslate}
+      <button onClick={handle_translate}
         className="translate_button"
         disabled={loading}
       >
