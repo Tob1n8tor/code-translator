@@ -1,5 +1,5 @@
-# Node modules (frontend)
-frontend/node_modules/
+# vscode
+.vscode/
 
 # Python virtual environment (backend)
 .venv/

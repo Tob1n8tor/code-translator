@@ -1,6 +1,7 @@
 import './App.css';
 import Select from "react-select";
 import { useState, useRef } from 'react';
+import axios from 'axios';
 import 'prismjs';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript'; // For JS highlighting
@@ -20,11 +21,13 @@ const language_options = [
 ];
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const [input_language, set_input_language] = useState(language_options[0]);
   const [output_language, set_output_language] = useState(language_options[1]);
   const [code, set_code] = useState('');
   const [translated_code, set_translated_code] = useState('');
-
+  
+  // Create a ref to the hidden file input
   const fileInputRef = useRef(null);
 
   const handle_input_language_change = (selected_option) => {
@@ -67,14 +70,39 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
-  const handle_translate = () => {
-    //set_translated_code(`${code}`);
-    set_translated_code(`${code}`)
-  };
-
   // Trigger file input when the upload button is clicked
   const handleUploadClick = () => {
     fileInputRef.current.click();
+  };
+
+  const handleTranslate = async () => {
+    if (!input_language) {
+      alert('Please select a input language!');
+      return;
+    }
+    if (!output_language) {
+      alert('Please select a output language!');
+      return;
+    }
+    if (!code) {
+      alert('Please provide code to translate!');
+      return;
+    }
+
+    setLoading(true); // Show loading state
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/translate-code/', {
+        code: code,
+        target_language: output_language.value,
+      });
+
+      set_translated_code(response.data.translated_code);
+    } catch (error) {
+      console.error('Error during translation:', error);
+      alert('An error occurred while translating the code.');
+    } finally {
+      setLoading(false); // Hide loading state
+    }
   };
 
   return (
@@ -152,7 +180,13 @@ function App() {
 
       </div>
 
-      <button onClick={handle_translate} className="translate_button">Translate</button>
+      <button onClick={handleTranslate}
+        className="translate_button"
+        disabled={loading}
+      >
+        {loading ? 'Translating...' : 'Translate'}
+      </button>
+
     </div>
   );
 }
