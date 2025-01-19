@@ -26,11 +26,19 @@
   --language-selection-text: #000000;
   --language-selection-shadow-inset-light: #161636;
   --language-selection-shadow-inset-dark: #30305f;
+
+  --code-background-start: #2c2c5e;
+  --code-background-end: #252545;
+  --code-border-color: rgba(159, 165, 208, 0.2);
 }
+
+
 
 /* Global Styles */
 body {
   background-color: var(--background-color);
+  background: radial-gradient(circle, #1e1e3f, #151528);
+  background-attachment: fixed;
   color: var(--text-color);
   font-family: 'Arial', sans-serif;
   margin: 0;
@@ -130,7 +138,7 @@ button {
 }
 
 button:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .translate_button {
@@ -157,13 +165,224 @@ button:hover {
   background: linear-gradient(145deg, var(--upload-button-end), var(--upload-button-start));
 }
 
-.button_group {
+/*.button_group {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
   display: flex;
   gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
+}*/
+
+/* Ensure buttons stay on top */
+/*.button_group .tooltip {
+  z-index: 20;
+}*/
 
 input[type="file"] {
   display: none;
+}
+
+/* Tooltip Container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  text-align: center;
+}
+
+/* Tooltip Text */
+.tooltip_text {
+  visibility: hidden;
+  background: linear-gradient(135deg, #4b4b7e, #2a2a5e);
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 100%;
+  /* Position underneath the button */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+  /* Prevents text from wrapping */
+  z-index: 10;
+  pointer-events: none;
+  /* Allows clicks to pass through */
+}
+
+/* Tooltip Visibility on Hover */
+.tooltip:hover .tooltip_text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(8px);
+  /* Slide down effect */
+}
+
+.code_section_container {
+  position: relative;
+  flex: 1 1 45%;
+  min-width: 300px;
+}
+
+.code_editor_wrapper {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--code-background-start), var(--code-background-end));
+  box-shadow:
+    8px 8px 15px var(--box-shadow-dark),
+    -8px -8px 15px var(--box-shadow-light);
+  border: 1px solid var(--code-border-color);
+  transition: all 0.3s ease;
+  height: 500px;
+}
+
+
+.code_editor_wrapper:hover {
+  box-shadow:
+    10px 10px 20px var(--box-shadow-dark),
+    -10px -10px 20px var(--box-shadow-light);
+  transform: scale(1.015);
+}
+
+
+.code_section {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--code-background-start), var(--code-background-end));
+  box-shadow:
+    8px 8px 15px var(--box-shadow-dark),
+    -8px -8px 15px var(--box-shadow-light);
+  border: 1px solid var(--code-border-color);
+  transition: all 0.3s ease;
+  height: 500px !important;
+  /* Explicit height */
+  max-height: 500px !important;
+  min-height: 300px !important;
+}
+
+.code_section:hover {
+  box-shadow:
+    10px 10px 20px var(--box-shadow-dark),
+    -10px -10px 20px var(--box-shadow-light);
+  transform: scale(1.015);
+}
+
+/* Ensure CodeMirror editor blends with the background */
+.cm-editor {
+  height: 100% !important;
+  border-radius: 15px;
+  background: transparent !important;
+}
+
+.cm-scroller {
+  background-color: transparent !important;
+}
+
+.cm-editor .cm-scroller {
+  overflow: auto;
+  max-height: 500px;
+  padding: 15px;
+  font-family: 'Fira Code', 'Consolas', monospace !important;
+  font-size: 14px;
+}
+
+/* Customize CodeMirror scrollbar */
+.cm-editor .cm-scroller::-webkit-scrollbar {
+  width: 10px;
+}
+
+.cm-editor .cm-scroller::-webkit-scrollbar-track {
+  background: rgba(159, 165, 208, 0.1);
+  border-radius: 10px;
+}
+
+.cm-editor .cm-scroller::-webkit-scrollbar-thumb {
+  background: rgba(159, 165, 208, 0.3);
+  border-radius: 10px;
+}
+
+.cm-editor .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: rgba(159, 165, 208, 0.5);
+}
+
+/* Placeholder styling */
+.cm-editor .cm-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+  padding-left: 10px;
+}
+
+.cm-gutter {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.cm-gutters {
+  background-color: transparent !important;
+  border: none !important;
+  border-right: 1px solid rgba(159, 165, 208, 0.1) !important;
+}
+
+.cm-lineNumbers .cm-gutterElement {
+  background-color: transparent !important;
+  color: rgba(159, 165, 208, 0.6) !important;
+  padding-right: 10px !important;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: space-between;
+  margin-top: 20px;
+  position: relative;
+}
+
+.code_section_container {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.section_buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.translate_button_container {
+  position: absolute;
+  bottom: -80px;
+  /* Adjust this value as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+}
+
+.translate_button {
+  width: 150px;
+  height: 45px;
+  margin: 0;
+}
+
+/* Button styling consistency */
+.upload_button,
+.copy_button,
+.download_button {
+  width: 45px;
+  height: 45px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
