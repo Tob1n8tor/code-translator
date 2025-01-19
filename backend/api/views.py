@@ -1,3 +1,8 @@
+from transformers import AutoTokenizer, RobertaTokenizer, AutoModelForSeq2SeqLM, T5ForConditionalGeneration
+from peft import PeftModel, PeftConfig
+import os
+import torch
+
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import TextIteratorStreamer
 from django.http import StreamingHttpResponse
@@ -10,13 +15,22 @@ import os
 import threading
 
 
-tokenizer = AutoTokenizer.from_pretrained("Salesforce/codet5-small")
 
-#model = AutoModelForSeq2SeqLM.from_pretrained("Salesforce/codet5-small")
-import os
+model_path = os.path.join("api", "early_stopping_lora_4bit_quant_codeT5-small-own-dataV4_100_epochs_batchsize_8")
 
-model_path = os.path.join("api", "code_translation_model_seq2seq")
-model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
+peft_model_id = model_path
+
+config = PeftConfig.from_pretrained(peft_model_id)
+
+model = T5ForConditionalGeneration.from_pretrained(
+    config.base_model_name_or_path,
+    device_map="cpu",
+)
+
+tokenizer = RobertaTokenizer.from_pretrained(config.base_model_name_or_path)
+
+model = PeftModel.from_pretrained(model, peft_model_id)
+model = model.merge_and_unload() 
 
 class CodeTranslationView(APIView):
     def post(self, request):
