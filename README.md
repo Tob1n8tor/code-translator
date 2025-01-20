@@ -58,7 +58,7 @@ In-depth paragraph about our project and overview of use.
 
 1. **Build and start the containers using Docker Compose**
     ```bash
-    docker-compose up --profiles dev up
+    docker-compose --profile dev up
     ```
     This command will build and start both the React frontend and Django backend containers. It will also configure networking between the two services.
 
