@@ -32,8 +32,6 @@
   --code-border-color: rgba(159, 165, 208, 0.2);
 }
 
-
-
 /* Global Styles */
 body {
   background-color: var(--background-color);
@@ -75,25 +73,6 @@ h2 {
   min-width: 300px;
 }
 
-/* Input and Output Boxes */
-
-
-/* .code_input,.code_output
-{
-  font-family: 'Fira Code', monospace;
-  font-size: 14px;
-  background: linear-gradient(145deg, var(--secondary-background-gradient-start), var(--secondary-background-gradient-end));
-  border-radius: 10px;
-  border: none;
-  color: var(--code-text-color);
-  height: 400px;
-  width: 100%;
-  overflow: auto;
-  box-shadow: 5px 5px 10px var(--box-shadow-dark), -5px -5px 10px var(--box-shadow-light);
-  padding: 15px;
-  box-sizing: border-box;
-} */
-
 /* Language Selection */
 .language_selection {
   display: flex;
@@ -115,7 +94,6 @@ h2 {
 }
 
 /* Buttons */
-
 .switch_button {
   background-color: transparent;
   border: none;
@@ -164,20 +142,6 @@ button:hover {
 .upload_button:hover {
   background: linear-gradient(145deg, var(--upload-button-end), var(--upload-button-start));
 }
-
-/*.button_group {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 10;
-  display: flex;
-  gap: 10px;
-}*/
-
-/* Ensure buttons stay on top */
-/*.button_group .tooltip {
-  z-index: 20;
-}*/
 
 input[type="file"] {
   display: none;
@@ -242,14 +206,12 @@ input[type="file"] {
   height: 500px;
 }
 
-
 .code_editor_wrapper:hover {
   box-shadow:
     10px 10px 20px var(--box-shadow-dark),
     -10px -10px 20px var(--box-shadow-light);
   transform: scale(1.015);
 }
-
 
 .code_section {
   position: relative;

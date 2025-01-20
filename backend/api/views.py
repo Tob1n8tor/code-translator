@@ -1,20 +1,14 @@
-from transformers import AutoTokenizer, RobertaTokenizer, AutoModelForSeq2SeqLM, T5ForConditionalGeneration
+from transformers import RobertaTokenizer, T5ForConditionalGeneration, TextIteratorStreamer
 from peft import PeftModel, PeftConfig
 import os
-import torch
+import threading
 
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from transformers import TextIteratorStreamer
 from django.http import StreamingHttpResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CodeTranslationSerializer
-import os
-import threading
-
-
 
 model_path = os.path.join("api", "early_stopping_lora_4bit_quant_codeT5-small-own-dataV4_100_epochs_batchsize_8")
 
@@ -38,6 +32,7 @@ class CodeTranslationView(APIView):
         if serializer.is_valid():
             code = serializer.validated_data["code"]
             target_language = serializer.validated_data["target_language"]
+            input_language = serializer.validated_data["input_language"]
 
             def generate_stream():
 
@@ -45,7 +40,7 @@ class CodeTranslationView(APIView):
 
                 try:
                     # Preprocessing 
-                    promt = f'translate to {target_language}: {code}'
+                    promt = f'translate {input_language} to {target_language}: {code}'
                     inputs = tokenizer(promt, return_tensors="pt", max_length=2048, truncation=True)
 
                     # Start the generation in a separate thread

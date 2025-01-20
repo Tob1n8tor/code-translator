@@ -1,7 +1,6 @@
 import './App.css';
 import Select from "react-select";
 import { useState, useRef } from 'react';
-import axios from 'axios';
 import 'prismjs';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript'; // For JS highlighting
@@ -12,7 +11,7 @@ import { EditorView } from '@codemirror/view';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faCopy, faDownload } from '@fortawesome/free-solid-svg-icons';
 
-
+// Language options for the dropdowns
 const language_options = [
   { value: 'java', label: 'Java' },
   { value: 'python', label: 'Python' },
@@ -31,7 +30,6 @@ function App() {
 
   const handle_input_language_change = (selected_option) => {
     set_input_language(selected_option);
-    // Create a ref to the hidden file input
   }
 
   const handle_output_language_change = (selected_option) => {
@@ -110,6 +108,7 @@ function App() {
         body: JSON.stringify({
           code: code,
           target_language: output_language.value,
+          input_language: input_language.value,
         }),
       });
 
@@ -129,8 +128,6 @@ function App() {
           set_translated_code((prev) => prev + chunk); // Update the state
         }
       }
-
-      //set_translated_code(response.data.translated_code);
     } catch (error) {
       console.error('Error during translation:', error);
       alert('An error occurred while translating the code.');
@@ -139,12 +136,9 @@ function App() {
     }
   };
 
-
-
   return (
     <div className="app">
       <h2>Code Translator</h2>
-
 
       <div className="language_selection">
         <Select
@@ -163,7 +157,6 @@ function App() {
           className="language_dropdown"
         />
       </div>
-
 
       <div className="container">
         {/* Left Section (Code Input + Upload Button) */}
