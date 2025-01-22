@@ -66,6 +66,9 @@ In-depth paragraph about our project and overview of use.
     
     Frontend (React): Open your browser and go to http://localhost:3000
 
+### Online Access
+Our application is currently deployed online and can be accessed directly without requiring local setup.
+Visit the following link to explore the code translation functionality: https://frontend-code-to-code-translation-kabul-238165955840.europe-west1.run.app/
 
 ## Model Fine-Tuning & Benchmarking
 
