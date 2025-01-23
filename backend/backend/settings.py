@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+CORS_ALLOWED_ORIGINS = [
+    'https://frontend-code-to-code-translation-kabul-238165955840.europe-west1.run.app',
+    'http://localhost:3000'
+    ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

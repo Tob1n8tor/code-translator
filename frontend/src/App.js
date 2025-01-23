@@ -100,7 +100,7 @@ function App() {
     set_translated_code(''); // Clear previous translation
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/translate-code/', {
+      const response = await fetch('https://backend-code-to-code-translation-kabul-238165955840.europe-west1.run.app/api/translate-code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
