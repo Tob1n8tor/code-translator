@@ -53,8 +53,11 @@ In-depth paragraph about our project and overview of use.
     cd kabul
     ```
 2. **Install dependencies**
-    
-    TODO: Figure out what dependencies must be installed if new user clones project
+    ```bash
+    cd frontend
+    npm install
+    cd ..
+    ```
 
 1. **Build and start the containers using Docker Compose**
     ```bash
