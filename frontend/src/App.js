@@ -1,6 +1,6 @@
 import './App.css';
 import Select from "react-select";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import 'prismjs';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript'; // For JS highlighting
@@ -10,6 +10,7 @@ import 'prismjs/themes/prism.css'; // Optional: import Prism theme
 import { EditorView } from '@codemirror/view';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faCopy, faDownload } from '@fortawesome/free-solid-svg-icons';
+import ExampleProblems from './components/ExampleProblems.tsx';
 
 // Language options for the dropdowns
 const language_options = [
@@ -136,107 +137,152 @@ function App() {
     }
   };
 
+  // Add ctrl+enter key combination event listener for translation
+  useEffect(() => {
+    const handle_keyboard_translate = (event) => {
+      // Check for Ctrl+Enter key combination
+      if (event.ctrlKey && event.key === 'Enter') {
+        event.preventDefault(); // Prevent default behavior
+        handle_translate(); // Trigger translation
+      }
+    };
+
+    // Add event listener to document
+    document.addEventListener('keydown', handle_keyboard_translate);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handle_keyboard_translate);
+    };
+  }, [handle_translate]);
+
+  const handleExampleSelect = (code, language) => {
+    set_code(code);
+    // Find and set the corresponding language option
+    const selectedLanguage = language_options.find(option =>
+      option.value.toLowerCase() === language.toLowerCase()
+    );
+    if (selectedLanguage) {
+      set_input_language(selectedLanguage);
+    }
+  };
+
+  const handle_mode_switch = () => {
+    const rootElement = document.documentElement;
+    rootElement.classList.toggle('whitemode');
+  };
+
   return (
-    <div className="app">
-      <h2>Code Translator</h2>
+    <body>
+      <button onClick={handle_mode_switch} id="theme-switch">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z" /></svg>
+      </button>
 
-      <div className="language_selection">
-        <Select
-          options={language_options}
-          value={input_language}
-          onChange={handle_input_language_change}
-          placeholder="Select input language"
-          className="language_dropdown"
-        />
-        <button onClick={handle_switch_languages} className="switch_button">⇄</button>
-        <Select
-          options={language_options}
-          value={output_language}
-          onChange={handle_output_language_change}
-          placeholder="Select output language"
-          className="language_dropdown"
-        />
-      </div>
+      <div className="app">
+        <h2>Code Translator</h2>
 
-      <div className="container">
-        {/* Left Section (Code Input + Upload Button) */}
-        <div className="code_section_container left_section">
-          <CodeMirror
-            value={code}
-            height="500px"
-            className="code_section"
-            extensions={[javascript(),
-            EditorView.theme({ '&.cm-editor': { textAlign: 'left' }, })
-            ]}
-            theme={'dark'}
-            basicSetup={{
-              lineNumbers: true,
-            }}
-            onChange={set_code}
-            placeholder="Input your code here"
+        <div className="language_selection">
+          <Select
+            options={language_options}
+            value={input_language}
+            onChange={handle_input_language_change}
+            placeholder="Select input language"
+            className="language_dropdown"
           />
-          <div className="section_buttons">
-            <div className="tooltip">
-              <button onClick={handle_upload_click} className="upload_button">
-                <FontAwesomeIcon icon={faUpload} />
-              </button>
-              <span className="tooltip_text">Upload</span>
+          <button onClick={handle_switch_languages} className="switch_button">⇄</button>
+          <Select
+            options={language_options}
+            value={output_language}
+            onChange={handle_output_language_change}
+            placeholder="Select output language"
+            className="language_dropdown"
+          />
+        </div>
+
+        <div className="container">
+          {/* Left Section (Code Input + Upload Button) */}
+          <div className="code_section_container left_section">
+            <CodeMirror
+              value={code}
+              height="500px"
+              className="code_section"
+              extensions={[javascript(),
+              EditorView.theme({ '&.cm-editor': { textAlign: 'left' }, })
+              ]}
+              theme={'dark'}
+              basicSetup={{
+                lineNumbers: true,
+              }}
+              onChange={set_code}
+              placeholder="Input your code here"
+            />
+            <div className="section_buttons">
+              <div className="tooltip">
+                <button onClick={handle_upload_click} className="upload_button">
+                  <FontAwesomeIcon icon={faUpload} />
+                </button>
+                <span className="tooltip_text">Upload</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Middle translate button */}
+          <div className="translate_button_container">
+            <button
+              onClick={handle_translate}
+              className="translate_button"
+              disabled={loading}
+            >
+              {loading ? 'Translating...' : 'Translate'}
+            </button>
+          </div>
+
+          {/* Right Section (Translated Code + Copy/Download Buttons) */}
+          <div className="code_section_container right_section">
+            <CodeMirror
+              value={translated_code}
+              height="500px"
+              className="code_section"
+              extensions={[javascript(),
+              EditorView.theme({ '&.cm-editor': { textAlign: 'left' }, })
+              ]}
+              theme={'dark'}
+              options={{
+                lineNumbers: true,
+              }}
+              readOnly={true}
+              placeholder="Translated code will appear here"
+            />
+            <div className="section_buttons">
+              <div className="tooltip">
+                <button onClick={handle_copy} className="copy_button">
+                  <FontAwesomeIcon icon={faCopy} />
+                </button>
+                <span className="tooltip_text">Copy</span>
+              </div>
+              <div className="tooltip">
+                <button onClick={handle_download} className="download_button">
+                  <FontAwesomeIcon icon={faDownload} />
+                </button>
+                <span className="tooltip_text">Download</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Middle translate button */}
-        <div className="translate_button_container">
-          <button
-            onClick={handle_translate}
-            className="translate_button"
-            disabled={loading}
-          >
-            {loading ? 'Translating...' : 'Translate'}
-          </button>
-        </div>
+        <ExampleProblems onSelectExample={handleExampleSelect} />
 
-        {/* Right Section (Translated Code + Copy/Download Buttons) */}
-        <div className="code_section_container right_section">
-          <CodeMirror
-            value={translated_code}
-            height="500px"
-            className="code_section"
-            extensions={[javascript(),
-            EditorView.theme({ '&.cm-editor': { textAlign: 'left' }, })
-            ]}
-            theme={'dark'}
-            options={{
-              lineNumbers: true,
-            }}
-            readOnly={true}
-            placeholder="Translated code will appear here"
-          />
-          <div className="section_buttons">
-            <div className="tooltip">
-              <button onClick={handle_copy} className="copy_button">
-                <FontAwesomeIcon icon={faCopy} />
-              </button>
-              <span className="tooltip_text">Copy</span>
-            </div>
-            <div className="tooltip">
-              <button onClick={handle_download} className="download_button">
-                <FontAwesomeIcon icon={faDownload} />
-              </button>
-              <span className="tooltip_text">Download</span>
-            </div>
-          </div>
-        </div>
+        {/* Hidden file input */}
+        <input
+          ref={file_input_ref}
+          type="file"
+          onChange={handle_file_upload}
+          style={{ display: 'none' }}
+        />
       </div>
 
-      {/* Hidden file input */}
-      <input
-        ref={file_input_ref}
-        type="file"
-        onChange={handle_file_upload}
-        style={{ display: 'none' }}
-      />
-    </div>
+    </body>
   );
 }
 
