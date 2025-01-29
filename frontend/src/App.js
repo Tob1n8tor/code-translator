@@ -9,7 +9,7 @@ import 'prismjs/components/prism-java';
 import 'prismjs/themes/prism.css'; // Optional: import Prism theme
 import { EditorView } from '@codemirror/view';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload, faCopy, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faCopy, faDownload, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ExampleProblems from './components/ExampleProblems.tsx';
 
 // Language options for the dropdowns
@@ -25,6 +25,7 @@ function App() {
   const [output_language, set_output_language] = useState(language_options[1]);
   const [code, set_code] = useState('');
   const [translated_code, set_translated_code] = useState('');
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Create a ref to the hidden file input
   const file_input_ref = useRef(null);
@@ -53,9 +54,15 @@ function App() {
   };
 
   const handle_copy = () => {
-    navigator.clipboard.writeText(translated_code).then(() => {
-      alert('Copied to clipboard!');
-    });
+    navigator.clipboard.writeText(translated_code)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+      })
+      .catch(err => {
+        console.error('Unable to copy to clipboard.', err);
+        setCopySuccess(false);
+      });
   };
 
   const handle_download = () => {
@@ -256,8 +263,8 @@ function App() {
             />
             <div className="section_buttons">
               <div className="tooltip">
-                <button onClick={handle_copy} className="copy_button">
-                  <FontAwesomeIcon icon={faCopy} />
+                <button onClick={handle_copy} className={`copy_button ${copySuccess ? 'copied' : ''}`}>
+                  <FontAwesomeIcon icon={copySuccess ? faCheck : faCopy} />
                 </button>
                 <span className="tooltip_text">Copy</span>
               </div>
