@@ -85,6 +85,10 @@ We fine tuned following base models for code translation tasks:
 - Salesforce/codeT5-small
 - Salesforce/codeT5-base
 - openai-community/gpt2
+- microsoft/codebert-base
+- NousResearch/Llama-3.2-1B
+- facebook/bart-base
+- lirezamsh/small100
 
 ### Datasets
 For the model fine-tuning process, we use the following datasets:
