@@ -1,6 +1,6 @@
 import './App.css';
 import Select from "react-select";
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import 'prismjs';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript'; // For JS highlighting
@@ -97,7 +97,7 @@ function App() {
   };
 
   // Handle API request for code translation
-  const handle_translate = async () => {
+  const handle_translate = useCallback(async () => {
     if (!input_language) {
       alert('Please select a input language!');
       return;
@@ -151,7 +151,7 @@ function App() {
     } finally {
       set_loading(false); // Hide loading state
     }
-  };
+  }, [code, input_language, output_language]);
 
   // Handle keyboard shortcut (Ctrl + Enter) for translation
   useEffect(() => {
