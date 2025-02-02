@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'https://code-translation.com'
     'https://frontend-code-to-code-translation-kabul-238165955840.europe-west1.run.app',
     'http://localhost:3000'
     ]
