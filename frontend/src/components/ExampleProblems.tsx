@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Represents a coding example with a title, source code, and programming language.
+ */
 interface ExampleProblem {
     title: string;
     code: string;
@@ -10,6 +13,7 @@ interface ExampleProblemsProps {
     onSelectExample: (code: string, language: string) => void;
 }
 
+// List of predefined example coding problems
 const EXAMPLE_PROBLEMS: ExampleProblem[] = [
     {
         title: "Java method for addition",
@@ -44,6 +48,15 @@ const EXAMPLE_PROBLEMS: ExampleProblem[] = [
         language: "c++"
     }
 ];
+
+
+/**
+ * ExampleProblems component displays a list of example coding problems.
+ * Users can click on a problem to select it.
+ * 
+ * @param {ExampleProblemsProps} props - Component props.
+ * @returns {JSX.Element} - Rendered component.
+ */
 const ExampleProblems: React.FC<ExampleProblemsProps> = ({ onSelectExample }) => {
     return (
         <div className="example-problems">

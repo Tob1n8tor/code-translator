@@ -30,6 +30,7 @@ function App() {
   // Create a ref to the hidden file input
   const file_input_ref = useRef(null);
 
+  // Handle language selection changes
   const handle_input_language_change = (selected_option) => {
     set_input_language(selected_option);
   }
@@ -38,12 +39,14 @@ function App() {
     set_output_language(selected_option);
   };
 
+  // Swap input and output languages 
   const handle_switch_languages = () => {
     const temp = input_language;
     set_input_language(output_language);
     set_output_language(temp);
   };
 
+  // Handle file selection for uploading
   const handle_file_upload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -53,6 +56,7 @@ function App() {
     }
   };
 
+  // Copy translated code to clipboard
   const handle_copy = () => {
     navigator.clipboard.writeText(translated_code)
       .then(() => {
@@ -65,12 +69,14 @@ function App() {
       });
   };
 
+  // Download translated code as a file
   const handle_download = () => {
     const blob = new Blob([translated_code], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
 
+    // Set file extension based on output language
     if (output_language.value === 'java') {
       link.download = 'translated_code.java';
     }
@@ -90,6 +96,7 @@ function App() {
     file_input_ref.current.click();
   };
 
+  // Handle API request for code translation
   const handle_translate = async () => {
     if (!input_language) {
       alert('Please select a input language!');
@@ -108,6 +115,8 @@ function App() {
     set_translated_code(''); // Clear previous translation
 
     try {
+
+      // can be changed to 'http://127.0.0.1:8000/api/translate-code/' if backend is being run locally via docker-compose
       const response = await fetch('https://backend-code-to-code-translation-kabul-238165955840.europe-west1.run.app/api/translate-code/', {
         method: 'POST',
         headers: {
@@ -144,7 +153,7 @@ function App() {
     }
   };
 
-  // Add ctrl+enter key combination event listener for translation
+  // Handle keyboard shortcut (Ctrl + Enter) for translation
   useEffect(() => {
     const handle_keyboard_translate = (event) => {
       // Check for Ctrl+Enter key combination
@@ -163,6 +172,7 @@ function App() {
     };
   }, [handle_translate]);
 
+  // Handle selecting an example problem
   const handleExampleSelect = (code, language) => {
     set_code(code);
     // Find and set the corresponding language option
@@ -174,6 +184,7 @@ function App() {
     }
   };
 
+  // Handle theme switching
   const handle_mode_switch = () => {
     const rootElement = document.documentElement;
     rootElement.classList.toggle('whitemode');
