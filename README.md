@@ -7,10 +7,7 @@ Web Application for translating code from one language (e.g Java) to another lan
 ### Project Overview
 This project aims to fine-tune existing models using the Hugging Face library for code translation tasks. The goal is to evaluate different models and datasets, adjusting hyperparameters to find the best-performing combination. The trained models, data, and results are stored in the model_training directory, which also includes an Excel file for model comparison. Additionally, a detailed research paper explaining the methodology and findings is included.
 
-In-depth paragraph about our project and overview of use. 
-
 ### Project structure
-#TODO: complete project structure
 ```Bash
 \kabul
 |
