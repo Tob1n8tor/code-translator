@@ -105,7 +105,7 @@ We benchmarked the models using different test sets. We had one test set for eac
 For easier comparison, the results are also visualized using differnts charts in the Excel file.
 The benchmarking code is included in the [model_training/benchmarking](https://gitlab.lrz.de/bpc-ws-2425/kabul/-/tree/main/model_training/benchmarking?ref_type=heads) directory.
 ## Research Paper
-A detailed report explaining the methodology, model evaluation, and results is included in the  [/reports](https://gitlab.lrz.de/bpc-ws-2425/kabul/-/tree/main/reports?ref_type=heads) directory. This report provides insights into the model selection, fine-tuning process and model evaluation.
+A detailed report explaining the methodology, model evaluation, and results is included in the  [/report](https://gitlab.lrz.de/bpc-ws-2425/kabul/-/tree/main/report?ref_type=heads) directory. This report provides insights into the model selection, fine-tuning process and model evaluation.
 
 ## Troubleshooting: 
 - when you run into issues like react-script not found try to run npm install in the /frontend folder from terminal first and the try the docker-compose command again 
