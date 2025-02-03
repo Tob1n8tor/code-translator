@@ -12,12 +12,13 @@ services:
   frontend:
     build:
       context: ./frontend
-      target: dev                     # Use the dev stage of the Dockerfile
+      target: dev                     # use the dev stage of the Dockerfile
     container_name: react-frontend
     ports:
       - "3000:3000"
     volumes:
       - ./frontend:/code
+      - /code/node_modules
     profiles:
       - dev
     command: ["npm", "run", "start"]
