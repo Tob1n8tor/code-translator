@@ -58,7 +58,7 @@ class CodeTranslationView(APIView):
         serializer = CodeTranslationSerializer(data=request.data)
         if serializer.is_valid():
 
-            # Ectract validated data
+            # Extract validated data
             code = serializer.validated_data["code"]
             target_language = serializer.validated_data["target_language"]
             input_language = serializer.validated_data["input_language"]

@@ -39,7 +39,7 @@ def prepare_input_bleu(sentences):
     return result
 
 def benchmark_model(model_name, dataset_name, training_size, hyperparameters, preds, refs, result_path, save_results=False, lora=False, quantization=False, earlystopping=False):
-    #compute metrics
+    # Compute metrics
     rouge1, rouge2, rougeL, rougeLsum = compute_rouge(preds, refs)
     ter = compute_ter(preds, refs)
     bert_score = compute_bert_score(preds, refs)
@@ -51,7 +51,7 @@ def benchmark_model(model_name, dataset_name, training_size, hyperparameters, pr
     frugal_score = compute_frugal_score(preds, refs)
     avg_frugal_score = sum(frugal_score["scores"]) / len(frugal_score["scores"])  
 
-    # prepare results to save later
+    # Prepare results to save later
     results = {
         "model_name": model_name,
         "dataset_name": dataset_name,

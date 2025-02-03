@@ -1,4 +1,4 @@
-# vscode
+# VSCode
 .vscode/
 
 # Python virtual environment (backend)
@@ -8,7 +8,7 @@
 .env
 .DS_Store
 
-# Trainig
+# Training
 model_training/results/
 model_training/data/
 model_training/training_codes/results/

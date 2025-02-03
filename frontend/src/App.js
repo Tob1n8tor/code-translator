@@ -116,7 +116,7 @@ function App() {
 
     try {
 
-      // can be changed to 'http://127.0.0.1:8000/api/translate-code/' if backend is being run locally via docker-compose
+      // Can be changed to 'http://127.0.0.1:8000/api/translate-code/' if backend is being run locally via docker-compose
       const response = await fetch('https://backend-code-to-code-translation-kabul-238165955840.europe-west1.run.app/api/translate-code/', {
         method: 'POST',
         headers: {
@@ -166,7 +166,7 @@ function App() {
     // Add event listener to document
     document.addEventListener('keydown', handle_keyboard_translate);
 
-    // Cleanup event listener on component unmount
+    // Clean-up event listener on component unmount
     return () => {
       document.removeEventListener('keydown', handle_keyboard_translate);
     };
@@ -184,7 +184,7 @@ function App() {
     }
   };
 
-  // Handle theme switching
+  // Handle theme-switching
   const handle_mode_switch = () => {
     const rootElement = document.documentElement;
     rootElement.classList.toggle('whitemode');
