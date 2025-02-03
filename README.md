@@ -14,31 +14,31 @@ In-depth paragraph about our project and overview of use.
 ```Bash
 \kabul
 |
-├──  /backend                   # Django backend code
-|    ├── /api                   # Django REST API and used model for translation           
-|    ├── /backend               # Django project settings  
-|    ├── Dockerfile             # Dockerfile for Django backend
-|    ├── manage.py              # Django project entry point
-|    └── requirements.txt       # Python dependencies
+├──  /backend                               # Django backend code
+|    ├── /api                               # Django REST API and used model for translation           
+|    ├── /backend                           # Django project settings  
+|    ├── Dockerfile                         # Dockerfile for Django backend
+|    ├── manage.py                          # Django project entry point
+|    └── requirements.txt                   # Python dependencies
 |
-├── /frontend                   # React frontend code    
-|    ├── /public                # Public assets
-|    ├── /src                   # React components including App.js and App.css for the UI
-|    ├── Dockerfile             # Dockerfile for React frontend
-|    ├── firebase.json          # Firebase configuration for hosting and rewrites 
-|    ├── package-log.json       # Auto-generated lock file for dependencies, ensures consistent installs
-|    └── package.json           # Project metadata and dependencies for the React frontend
+├── /frontend                               # React frontend code    
+|    ├── /public                            # Public assets
+|    ├── /src                               # React components including App.js and App.css for the UI
+|    ├── Dockerfile                         # Dockerfile for React frontend
+|    ├── firebase.json                      # Firebase configuration for hosting and rewrites 
+|    ├── package-log.json                   # Auto-generated lock file for dependencies, ensures consistent installs
+|    └── package.json                       # Project metadata and dependencies for the React frontend
 |
-├── /model_training             # Trained models, data, and results
-|    ├── /benchmarking          # Model benchmarking results and code used for evaluation    
-|    └── /training_codes        # Python notebooks for model training
+├── /model_training                         # Trained models, data, and results
+|    ├── /benchmarking                      # Model benchmarking results and code used for evaluation    
+|    └── /training_codes                    # Python notebooks for model training
 |  
-├── /docs                       # Folder including final project paper
-|    └── project.paper.tex
-|    └── project.paper.pdf 
+├── /report                                 # Folder including final project paper
+|    └── Kabul_Code_Translation_Report.pdf
+|    └── Kabul_Code_Translation_Report.tex
 |    
-├── docker-compose.yml          # Docker Compose configuration for local setup
-└── README.md                   # This README file
+├── docker-compose.yml                      # Docker Compose configuration for local setup
+└── README.md                               # This README file
 ```
 
 ## Getting started
