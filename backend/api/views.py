@@ -84,6 +84,9 @@ class CodeTranslationView(APIView):
                 
                      # Stream the generated text
                     for new_text in streamer:
+                        # Check if the client has closed the connection
+                        if request.META.get("HTTP_CONNECTION") == "close":
+                            return
                         yield new_text
                         
                 except Exception as e:

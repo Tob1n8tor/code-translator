@@ -403,6 +403,15 @@ input[type="file"] {
   margin: 0;
 }
 
+.stop_button {
+  background-color: red;
+  color: black;
+}
+
+.stop_button:hover {
+  background-color: darkred;
+}
+
 /* Button styling consistency */
 .upload_button,
 .copy_button,

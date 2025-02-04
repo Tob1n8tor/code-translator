@@ -26,6 +26,7 @@ function App() {
   const [code, set_code] = useState('');
   const [translated_code, set_translated_code] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
+  const [controller, setController] = useState(null);
 
   // Create a ref to the hidden file input
   const file_input_ref = useRef(null);
@@ -96,6 +97,13 @@ function App() {
     file_input_ref.current.click();
   };
 
+  // Handle stopping the translation process
+  const handle_stop = () => {
+    controller.abort();
+    setController(new AbortController());
+    set_loading(false);
+  };
+
   // Handle API request for code translation
   const handle_translate = useCallback(async () => {
     if (!input_language) {
@@ -116,6 +124,15 @@ function App() {
 
     try {
 
+      // Abort previous request if it exists
+      if (controller) {
+        controller.abort();
+      }
+
+      // Create a new AbortController
+      const newController = new AbortController();
+      setController(newController);
+
       // Can be changed to 'http://127.0.0.1:8000/api/translate-code/' if backend is being run locally via docker-compose
       const response = await fetch('https://backend-code-to-code-translation-kabul-238165955840.europe-west1.run.app/api/translate-code/', {
         method: 'POST',
@@ -127,6 +144,7 @@ function App() {
           target_language: output_language.value,
           input_language: input_language.value,
         }),
+        signal: newController.signal,
       });
 
       if (!response.body) throw new Error('No response body');
@@ -146,10 +164,22 @@ function App() {
         }
       }
     } catch (error) {
-      console.error('Error during translation:', error);
-      alert('An error occurred while translating the code.');
+      if (error.name === 'AbortError') {
+        console.log('Translation request was aborted by the user.');
+      } else {
+        console.error('Error during translation:', error);
+
+        // If response exists, log details
+        if (error.response) {
+          const text = await error.response.text();
+          console.error("Server response:", text);
+        }
+
+        alert('An error occurred while translating the code.');
+      }
     } finally {
       set_loading(false); // Hide loading state
+      setController(null); // Reset the controller
     }
   }, [code, input_language, output_language]);
 
@@ -247,13 +277,24 @@ function App() {
 
           {/* Middle translate button */}
           <div className="translate_button_container">
-            <button
+
+            {!loading && (<button
               onClick={handle_translate}
               className="translate_button"
-              disabled={loading}
             >
-              {loading ? 'Translating...' : 'Translate'}
+              Translate
             </button>
+            )}
+
+            {/* Stop-Button (wird nur angezeigt, wenn loading === true) */}
+            {loading && (
+              <button
+                onClick={handle_stop}
+                className="stop_button"
+              >
+                Stop Translation
+              </button>
+            )}
           </div>
 
           {/* Right Section (Translated Code + Copy/Download Buttons) */}
